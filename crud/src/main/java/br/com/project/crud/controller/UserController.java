@@ -2,6 +2,7 @@ package br.com.project.crud.controller;
 
 import br.com.project.crud.model.User;
 import br.com.project.crud.repository.UserRepository;
+import br.com.project.crud.service.UserService;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,16 +18,20 @@ public class UserController {
 
     @Autowired
     private UserRepository userRepository;
+    private UserService userService;
+
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     @GetMapping("/users") //lista todos os usuarios
     public ResponseEntity<List<User>> listaUsuarios(){
-        List<User> users = userRepository.findAll();
-        return ResponseEntity.status(200).body(users);
+        return ResponseEntity.status(200).body(userService.listaUsuarios());
     }
 
     @GetMapping("/user/{id}") //lista os usuarios através do ID.
     public User getUser(@PathVariable Long id){
-        return userRepository.getById(id);
+        return userService.listaUsuariosPorId(id);
     }
 
     @GetMapping("/valores?valorIni=X&valorFin=Y") // lista todos os usuarios entre um range de id.
@@ -40,23 +45,20 @@ public class UserController {
     @PostMapping("/salvar")
     @Transactional
     public ResponseEntity<User> cadastraUsuario(@RequestBody User user){
-        User userNovo = userRepository.save(user);
-        return ResponseEntity.status(201).body(userNovo);
+        return ResponseEntity.status(201).body(userService.criaUsuario(user));
     }
 
 
     @PutMapping("/atualizar/{id}")
     @Transactional
     public ResponseEntity<User> editarUsuario(@RequestBody User user){
-        User usuarioAtualizado = userRepository.save(user);
-        return ResponseEntity.status(201).body(usuarioAtualizado);
+        return ResponseEntity.status(200).body(userService.editaUsuario(user));
     }
-
 
     @DeleteMapping("/del/{id}")
     @Transactional
     public ResponseEntity<?> deletaUsuario(@PathVariable Long id){
-        userRepository.deleteById(id);
+        userService.excluirUsuario(id);
         return ResponseEntity.status(204).build();
     }
 
