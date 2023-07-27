@@ -6,7 +6,6 @@ import br.com.project.crud.service.UserService;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,8 +36,7 @@ public class UserController {
     @GetMapping("/valores?valorIni=X&valorFin=Y") // lista todos os usuarios entre um range de id.
     @ResponseBody
     public ResponseEntity<List<User>> listaProdutoPorValor(@RequestParam("valorIni") @Valid Integer valorIni, @RequestParam("valorFim") @Valid Integer valorFim){
-        List<User> users = userRepository.findByIdBetween(valorIni, valorFim);
-        return new ResponseEntity<List<User>>(users, HttpStatus.OK);
+        return ResponseEntity.status(200).body(userService.listaUsuariosPorRange(valorIni, valorFim));
     }
 
 

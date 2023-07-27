@@ -9,6 +9,6 @@ import java.util.List;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 
-    List<User> findByIdBetween(Integer valorIni, Integer valorFin);
+    List<User> findByIdBetween(Integer valorIni, Integer valorFim);
 
 }

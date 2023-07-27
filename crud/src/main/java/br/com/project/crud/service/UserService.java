@@ -22,6 +22,10 @@ public class UserService {
         return userRepository.getById(id);
     }
 
+    public List<User> listaUsuariosPorRange(Integer valorIni, Integer valorFin){
+        return userRepository.findByIdBetween(valorIni, valorFin);
+    }
+
     public User criaUsuario(User user){
         return userRepository.save(user);
     }
