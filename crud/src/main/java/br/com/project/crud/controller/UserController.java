@@ -21,7 +21,7 @@ public class UserController {
     @GetMapping("/users") //lista todos os usuarios
     public ResponseEntity<List<User>> listaUsuarios(){
         List<User> users = userRepository.findAll();
-        return new ResponseEntity<List<User>>(users, HttpStatus.OK);
+        return ResponseEntity.status(200).body(users);
     }
 
     @GetMapping("/user/{id}") //lista os usuarios através do ID.
@@ -39,24 +39,25 @@ public class UserController {
 
     @PostMapping("/salvar")
     @Transactional
-    public ResponseEntity<HttpStatus> cadastraUsuario(@RequestBody User user){
-        userRepository.save(user);
-        return ResponseEntity.ok(HttpStatus.CREATED);
+    public ResponseEntity<User> cadastraUsuario(@RequestBody User user){
+        User userNovo = userRepository.save(user);
+        return ResponseEntity.status(201).body(userNovo);
     }
 
 
     @PutMapping("/atualizar/{id}")
     @Transactional
-    public User editarUsuario(@RequestBody User user){
-        return userRepository.save(user);
+    public ResponseEntity<User> editarUsuario(@RequestBody User user){
+        User usuarioAtualizado = userRepository.save(user);
+        return ResponseEntity.status(201).body(usuarioAtualizado);
     }
 
 
     @DeleteMapping("/del/{id}")
     @Transactional
-    public ResponseEntity<User> deletaUsuario(@PathVariable Long id){
+    public ResponseEntity<?> deletaUsuario(@PathVariable Long id){
         userRepository.deleteById(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.status(204).build();
     }
 
 
