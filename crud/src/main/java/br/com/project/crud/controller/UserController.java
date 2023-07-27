@@ -6,6 +6,7 @@ import br.com.project.crud.service.UserService;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,10 +29,12 @@ public class UserController {
         return ResponseEntity.status(200).body(userService.listaUsuarios());
     }
 
+
     @GetMapping("/user/{id}") //lista os usuarios através do ID.
     public User getUser(@PathVariable Long id){
         return userService.listaUsuariosPorId(id);
     }
+
 
     @GetMapping("/valores?valorIni=X&valorFin=Y") // lista todos os usuarios entre um range de id.
     @ResponseBody
@@ -58,6 +61,16 @@ public class UserController {
     public ResponseEntity<?> deletaUsuario(@PathVariable Long id){
         userService.excluirUsuario(id);
         return ResponseEntity.status(204).build();
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<User> validarSenha(@RequestBody User user){
+        Boolean valid = userService.validarSenha(user);
+        if(!valid){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        return ResponseEntity.status(200).build();
     }
 
 
