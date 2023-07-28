@@ -10,5 +10,6 @@ import java.util.List;
 public interface UserRepository extends JpaRepository<User, Long> {
 
     List<User> findByIdBetween(Integer valorIni, Integer valorFim);
+    User findByLogin(String login);
 
 }
