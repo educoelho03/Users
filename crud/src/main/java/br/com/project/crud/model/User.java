@@ -1,14 +1,15 @@
 package br.com.project.crud.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
 @Entity
 @Getter
 @Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
@@ -19,17 +20,18 @@ public class User {
     @Column(name = "id")
     private Long id;
 
-    @NotNull(message = "Este campo nao pode ser nulo")
-    @NotBlank(message = "Este campo nao pode ser vazio")
+    @NotBlank(message = "O nome é obrigatório.")
+    @Column(name = "name", length = 200)
     private String name;
 
-    @NotNull(message = "Este campo nao pode ser nulo")
+    @Email(message = "Insira um email válido")
+    @NotBlank(message = "O email é obrigatório.")
     private String email;
 
-    @NotBlank
+    @NotBlank(message = "A senha é obrigatória.")
     @Size(min = 5, max = 500, message = "Minimo 5 caracteres, máximo 500 caracteres")
     private String password;
 
-    @NotBlank
+    @NotBlank(message = "O telefone é obrigatório.")
     private String phone;
 }
